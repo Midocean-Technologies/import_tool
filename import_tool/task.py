@@ -5,7 +5,7 @@ import pandas as pd
 def import_si_from_xls(file_path):
     # print(file_path)
     # print(type(file_path))
-    df = pd.read_excel("/home/midocean/Project/f14/apps/pic_custom/pic_custom/Sales.xlsx")
+    # df = pd.read_excel("/home/midocean/Project/f14/apps/pic_custom/pic_custom/Sales.xlsx")
     df = pd.read_excel(str(file_path))
     df1 = df.fillna("-")
     dataDict = df1.to_dict(orient='records')
