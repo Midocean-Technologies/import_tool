@@ -2,6 +2,20 @@ import frappe
 from frappe.model.document import Document
 import pandas as pd
 
+
+def enqueue_j():
+    frappe.enqueue(
+            import_si_from_xls, # python function or a module path as string
+            queue="long", # one of short, default, long
+            timeout=3000000, # pass timeout manually
+            is_async=True, # if this is True, method is run in worker
+            now=False, # if this is True, method is run directly (not in a worker) 
+            job_name="Sales Invoice Import", # specify a job name
+            enqueue_after_commit=False, # enqueue the job after the database commit is done at the end of the request
+            at_front=False, # put the job at the front of the queue
+            file_path="/home/frappe/frappe-bench/apps/import_tool/import_tool/Sales_Stores.xlsx"
+        )
+
 def import_si_from_xls(file_path):
     # print(file_path)
     # print(type(file_path))
