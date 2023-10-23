@@ -55,6 +55,9 @@ def import_si_from_xls(file_path):
                 itemDoc.save()
         
         if data.get("Company") != "-":
+            if doc:
+                doc.submit()
+                doc = None
             salesinvoiceDoc = frappe.new_doc("Sales Invoice")
             salesinvoiceDoc.customer = data.get("Customer")
             salesinvoiceDoc.company = data.get("Company")
@@ -94,7 +97,7 @@ def import_si_from_xls(file_path):
             continue
 
         if doc:
-            salesinvoiceDoc.append("items",{
+            doc.append("items",{
                 'item_code': data.get("Item (Items)"),
                 'item_name': data.get("Item Name (Items)"),
                 'description': data.get("Description (Items)"),
@@ -105,6 +108,7 @@ def import_si_from_xls(file_path):
                 'warehouse': data.get("Warehouse (Items)"),
             })
             doc.save()
+            
 
 
         
