@@ -77,6 +77,7 @@ def import_si_from_xls(file_path):
             salesinvoiceDoc.customer = data.get("Customer")
             salesinvoiceDoc.company = data.get("Company")
             salesinvoiceDoc.posting_date = data.get("Date")
+            salesinvoiceDoc.set_posting_time = 1
             salesinvoiceDoc.due_date = data.get("Payment Due Date")
             salesinvoiceDoc.is_pos = data.get("Include Payment (POS)")
             salesinvoiceDoc.remarks = data.get("Remarks")
