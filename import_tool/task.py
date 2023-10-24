@@ -70,6 +70,7 @@ def import_si_from_xls(file_path):
         
         if data.get("Company") != "-":
             if doc:
+                doc.save()
                 doc.submit()
                 frappe.db.commit()
                 doc = None
@@ -108,7 +109,7 @@ def import_si_from_xls(file_path):
                 'description': data.get("Description (Sales Taxes and Charges)")
             })
 
-            salesinvoiceDoc.save()
+            # salesinvoiceDoc.save()
             doc = salesinvoiceDoc
             continue
 
@@ -123,7 +124,7 @@ def import_si_from_xls(file_path):
                 'amount': data.get("Amount (Items)"),
                 'warehouse': data.get("Warehouse (Items)"),
             })
-            doc.save()
+            # doc.save()
             
 
 
