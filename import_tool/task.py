@@ -71,6 +71,7 @@ def import_si_from_xls(file_path):
         if data.get("Company") != "-":
             if doc:
                 doc.submit()
+                frappe.db.commit()
                 doc = None
             salesinvoiceDoc = frappe.new_doc("Sales Invoice")
             salesinvoiceDoc.customer = data.get("Customer")
