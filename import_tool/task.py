@@ -3,6 +3,12 @@ from frappe.model.document import Document
 import pandas as pd
 
 
+def delete_si():
+    lst = frappe.get_all("Sales Invoice", filters={'docstatus':1})
+    for row in lst:
+        Doc = frappe.get_doc("Sales Invoice", row.name)
+        Doc.cancel()
+
 def enqueue_j():
     frappe.enqueue(
             import_si_from_xls, # python function or a module path as string
