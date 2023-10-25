@@ -8,6 +8,8 @@ def delete_si():
     for row in lst:
         Doc = frappe.get_doc("Sales Invoice", row.name)
         Doc.cancel()
+        print(row.name)
+        frappe.db.commit()
 
 def enqueue_j():
     frappe.enqueue(
