@@ -14,17 +14,17 @@ def delete_si():
 def enqueue_j():
     frappe.enqueue(
             import_si_from_xls, # python function or a module path as string
-            queue="long", # one of short, default, long
-            timeout=3000000, # pass timeout manually
-            is_async=True, # if this is True, method is run in worker
-            now=False, # if this is True, method is run directly (not in a worker) 
-            job_name="Sales Invoice Import", # specify a job name
-            enqueue_after_commit=False, # enqueue the job after the database commit is done at the end of the request
-            at_front=False, # put the job at the front of the queue
-            file_path="/home/frappe/frappe-bench/apps/import_tool/import_tool/Sales_Stores.xlsx"
+            queue= "long", # one of short, default, long
+            timeout= 3000000, # pass timeout manually
+            is_async= True, # if this is True, method is run in worker
+            now= False, # if this is True, method is run directly (not in a worker) 
+            job_name= "Sales Invoice Import", # specify a job name
+            enqueue_after_commit= False, # enqueue the job after the database commit is done at the end of the request
+            at_front= False, # put the job at the front of the queue
+            file_path= "/Users/sagarbhogayata/Sales_Stores.xlsx"
         )
 
-def import_si_from_xls(file_path):
+def import_si_from_xls(file_path="/Users/sagarbhogayata/Sales_Stores.xlsx"):
     # print(file_path)
     # print(type(file_path))
     # df = pd.read_excel("/home/midocean/Project/f14/apps/pic_custom/pic_custom/Sales.xlsx")
@@ -32,8 +32,9 @@ def import_si_from_xls(file_path):
     df1 = df.fillna("-")
     dataDict = df1.to_dict(orient='records')
     doc = None
+    i = 1
     for data in dataDict:
-        print(data)
+        
         if not frappe.db.exists("Company", data.get("Company")):
             if data.get("Company") != "-":
                 companyDoc = frappe.new_doc("Company")
@@ -79,8 +80,15 @@ def import_si_from_xls(file_path):
         if data.get("Company") != "-":
             if doc:
                 doc.save()
-                doc.submit()
+                doc.append("payments",{
+                    'mode_of_payment': data.get("Mode of Payment (Sales Invoice Payment)"),
+                    'amount': doc.base_grand_total,
+                })
+                doc.save()
+                # doc.submit()
                 frappe.db.commit()
+                print(i)
+                i = i + 1
                 doc = None
             salesinvoiceDoc = frappe.new_doc("Sales Invoice")
             salesinvoiceDoc.customer = data.get("Customer")
@@ -106,9 +114,7 @@ def import_si_from_xls(file_path):
                 'warehouse': data.get("Warehouse (Items)"),
             })
 
-            salesinvoiceDoc.append("payments",{
-                'mode_of_payment': data.get("Mode of Payment (Sales Invoice Payment)"),
-            })
+            
         
             salesinvoiceDoc.append("taxes",{
                 'charge_type': data.get("Type (Sales Taxes and Charges)"),
@@ -133,6 +139,9 @@ def import_si_from_xls(file_path):
                 'warehouse': data.get("Warehouse (Items)"),
             })
             # doc.save()
+        
+
+        
             
 
 
