@@ -27,6 +27,13 @@ def submit_invoice():
 		doc.submit()
 		frappe.db.commit()
 
+def submit_invoice_new():
+	lst = frappe.get_all("Sales Invoice", filters={'docstatus':0}, page_length=10, order_by='modified asc')
+	for row in lst:
+		doc = frappe.get_doc('Sales Invoice', row.name)
+		doc.submit()
+		frappe.db.commit()
+
 
 def submit_invoice_nq():
 	frappe.enqueue(
